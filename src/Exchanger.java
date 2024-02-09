@@ -16,16 +16,16 @@ private Map<String, Map<String, Double>> rates;
 
   //метод для добавления определенной трансакции
   public void addExchangeRate(String fromCurrency, String toCurrency, double rate) {
-    rates.putIfAbsent(fromCurrency,new HashMap<>()); // добавления валюты в коллекцию, если она отсутствует
-    rates.get(fromCurrency).put(toCurrency, rate); // позволяет добавлять или обновлять курсы обмена внутри коллекции
+    rates.putIfAbsent(fromCurrency,new HashMap<>()); // добавления базовой валюты в коллекцию, если она отсутствует --> создаем внешнюю карту
+    rates.get(fromCurrency).put(toCurrency, rate); // добавляет сменную валюту и курс, связывая его с ключом от внешней карты --> создание внутренней карты и связка
   }
 
   // метод для получения курса обмена между двумя валютами
   public double getExchangeRate(String fromCurr, String toCurr) {
     return rates.getOrDefault(fromCurr, new HashMap<>()).getOrDefault(toCurr, 0.0);
   }
-  //сначала пытаемся получить внутреннюю карту для базовой валюты из внешней карты --> если такой нет --> пустая карта
-  // пытаемся получить курс обмена для целевой валюты из внутренней карты --> если курса нет --> возвращаем 0.0
+  //сначала пытаемся получить внутреннюю карту по ключу внешней карты --> если такой нет --> пустая карта
+  //из внутренней карты пытаемся получить курс обмена --> если курса нет --> возвращаем 0.0
 
   //метод для конвертации валют
   public String convertCurrency(double amount, String fromCurr, String toCurr) {
